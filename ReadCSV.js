@@ -8,25 +8,26 @@ export default class ReadRemoteFile extends Component {
         super(props);
         this.state = { 
          checking:false,
-         objs: Array()
+         objs: Array
       };
+      this.handleClick = this.handleClick.bind(this);
     }
     handleClick = () => {
     readRemoteFile('https://raw.githubusercontent.com/stanybebe/stanybebe.github.io/master/AmphiBIO_v1.csv', {
       complete: (results) => {
         let keys = results.data[0];
         let val = results.data.slice(1);
-        let objs = val.map(array => {
+        let objsNu = val.map(array => {
             let obj ={};
             keys.forEach((key, i) => obj[key] = array[i]);
             return obj;
 
         });
-        console.log('Results:', objs);
+        
         this.setState({
-        objs: objs
+        objs: objsNu
         });
-        this.renderData();
+        console.log('Results:', this.state.objs);
       }, 
       
     });
@@ -35,12 +36,12 @@ export default class ReadRemoteFile extends Component {
 
   renderData() {
     const formattedObs = this.state.objs.map((ob) =>{
-        <ul key={ob.id}>
-        <li>{ob.Family}</li>
-        </ul>
+       
+        <li key={ob.id}>{ob.Family}</li>
+        
     })
     return (
-    <div>{formattedObs}</div>
+    <ul>{formattedObs}</ul>
 
     );
   }
@@ -49,7 +50,8 @@ export default class ReadRemoteFile extends Component {
     return (
      <div> 
      <button onClick={this.handleClick}>readRemoteFile</button>
-     {this.renderData()}
+     <div onClick={this.handleClick}>{this.renderData}</div>
+     
 
     </div>)
   }
